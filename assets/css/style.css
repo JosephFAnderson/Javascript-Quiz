@@ -4,8 +4,10 @@
 
 #timer{
     position: absolute;
-    right: 0px;
+    right: 15px;
     top: 0px;
+    font-size: 18px;
+    font-weight: bolder;
 }
 
 #staging{
@@ -17,7 +19,10 @@
     width: 800px;
     height: 500px;
     justify-content: center;
-    align-items: center;
+}
+
+#staging h1{
+    text-align: center;
 }
 
 #staging p{
@@ -25,6 +30,21 @@
     font-size: 18px;
 }
 
-#staging ul{
+#staging ol{
     list-style-type: none;
+}
+
+#staging ol li{
+    padding: 5px 0px;
+}
+
+button{
+    background-color: blue;
+    color: white;
+    font-size: 18px;
+    display: none;
+}
+
+#button1{
+    display: block;
 }

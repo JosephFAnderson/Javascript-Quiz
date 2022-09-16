@@ -1,6 +1,9 @@
 //Where to begin?
 //Array to hold questions
-var generateBtn = document.querySelector("#button1");
+var generateBtn1 = document.querySelector("#button1");
+var generateBtn2 = document.querySelector("#button2");
+var generateBtn3 = document.querySelector("#button3");
+var generateBtn4 = document.querySelector("#button4");
 var questionBank;
 
 //Create question object
@@ -47,3 +50,5 @@ function countdown(){
 
 //Starts timeer on button click
 generateBtn.addEventListener("click", countdown);
+
+// generateBtn.setAttribute("style", "display: none");
