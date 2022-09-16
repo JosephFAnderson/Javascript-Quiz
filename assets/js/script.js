@@ -1,19 +1,22 @@
 //Where to begin?
 //Array to hold questions
+var count = 0;
+var generateStartBtn = document.querySelector("#startbtn");
 var generateBtn1 = document.querySelector("#button1");
 var generateBtn2 = document.querySelector("#button2");
 var generateBtn3 = document.querySelector("#button3");
 var generateBtn4 = document.querySelector("#button4");
+var questionBlock = document.getElementById("questionBlock");
 var questionBank;
 
 //Create question object
-var question = {
-    questionText: "Is this working?",
-    option1: "Hello",
-    option2: "YES",
-    option3: "NO",
-    option4: "Hel",
-    correctAnswer: "Hello",
+var question1 = {
+    questionText: "Question 1",
+    option1: "Answer 1",
+    option2: "Answer 2",
+    option3: "Answer 3",
+    option4: "Answwer 4",
+    correctAnswer: "Answer 2",
     checkAnswer: function(a) {
         if(a === this.correctAnswer){
             console.log("Correct")
@@ -23,32 +26,55 @@ var question = {
     }
 };
 
-var questionBlock = document.getElementById("questionBlock");
+var question2 = {
+    questionText: "Question 2",
+    option1: "Answer 1",
+    option2: "Answer 2",
+    option3: "Answer 3",
+    option4: "Answwer 4",
+    correctAnswer: "Answer 4",
+    checkAnswer: function(a) {
+        if(a === this.correctAnswer){
+            console.log("Correct")
+        }else{
+            console.log("Incorrect")
+        }
+    }
+};
+
+questionBank = [question1, question2];
+
+
+function nextQuestion(){
+    questionBlock.textContent = questionBank[count].questionText;
+    console.log("Hello");
+}
+
+
+
 /*
-This is how we change the text in the <p> element of our staging area
-
-questionBlock.textContent = question.option1;
+This sets up the default timer.
 */
-
-var timer = document.getElementById("timer");
-
-/*
-This sets up the default timer. Need to replace "120" with a time variable
-*/
-timer.innerHTML = "Timer: " + "120";
+timer.innerHTML = "Timer: 120";
 
 //Timer Function
-function countdown(){
-    var seconds = 119;
+function countdown(){  
+    var seconds = 119;  
+    var timer = document.getElementById("timer");
+    
+    
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
-        if (seconds < 0) {
+        if (seconds === 0) {
             clearInterval(clock);
         }
     }, 1000);
 }
 
+
+
 //Starts timeer on button click
-generateBtn.addEventListener("click", countdown);
+generateStartBtn.addEventListener("click", countdown);
+generateStartBtn.addEventListener("click", nextQuestion);
 
 // generateBtn.setAttribute("style", "display: none");
