@@ -1,6 +1,7 @@
 //Where to begin?
 //Array to hold questions
 var count = 0;
+var seconds = 120;
 var generateStartBtn = document.querySelector("#startbtn");
 var generateBtn1 = document.querySelector("#button1");
 var generateBtn2 = document.querySelector("#button2");
@@ -34,19 +35,14 @@ var question2 = {
     option2: "Answer 2",
     option3: "Answer 3",
     option4: "Answwer 4",
-    correctAnswer: "Answer 4",
-    checkAnswer: function(a) {
-        if(a === this.correctAnswer){
-            console.log("Correct")
-        }else{
-            console.log("Incorrect")
-        }
-    }
+    correctAnswer: "Answer 1",
 };
+
+
 
 questionBank = [question1, question2];
 
-
+// This function is what runs the quiz part of the game.
 function nextQuestion(){
     questionBlock.textContent = questionBank[count].questionText;
     generateBtn1.textContent = questionBank[count].option1;
@@ -56,11 +52,26 @@ function nextQuestion(){
     generateStartBtn.setAttribute("style", "display: none;");
     questionChoices.setAttribute("style", "display: block;");
 
-    
-    if(count === questionBank.length) {
-        console.log("GAME OVER");
-    }
-    
+    generateBtn1.addEventListener("click", function() {
+        console.log(count);
+        console.log("Answer: " + questionBank[count].correctAnswer);
+        console.log("Choice: " + questionBank[count].option1);
+        if (questionBank[count].correctAnswer !== questionBank[count].option1){
+            seconds -= 15;
+            console.log("Wrong");
+        }else{
+            console.log("Correct!");
+        }
+
+        count++;
+        
+        if(count === questionBank.length){
+            console.log("Game Over");
+            //Need to hand a function call that directs to receiving input for leaderboard.
+        }else{
+            nextQuestion();
+        }
+    })
 }
 
 
@@ -71,10 +82,8 @@ This sets up the default timer.
 timer.innerHTML = "Timer: 120";
 
 //Timer Function
-function countdown(){  
-    var seconds = 10;  
-    var timer = document.getElementById("timer");
-    
+function countdown(){    
+    var timer = document.getElementById("timer");    
     
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
