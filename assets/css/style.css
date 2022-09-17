@@ -32,6 +32,8 @@
 
 #staging ol{
     list-style-type: none;
+    display: none;
+
 }
 
 #staging ol li{
@@ -41,10 +43,10 @@
 button{
     background-color: blue;
     color: white;
-    font-size: 18px;
-    display: none;
+    font-size: 18px;   
 }
 
 #startbtn{
     display: block;
+    width: 150px;
 }

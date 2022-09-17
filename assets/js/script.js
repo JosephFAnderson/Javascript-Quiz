@@ -7,6 +7,8 @@ var generateBtn2 = document.querySelector("#button2");
 var generateBtn3 = document.querySelector("#button3");
 var generateBtn4 = document.querySelector("#button4");
 var questionBlock = document.getElementById("questionBlock");
+var questionChoices = document.querySelector("#questionChoices");
+
 var questionBank;
 
 //Create question object
@@ -47,7 +49,18 @@ questionBank = [question1, question2];
 
 function nextQuestion(){
     questionBlock.textContent = questionBank[count].questionText;
-    console.log("Hello");
+    generateBtn1.textContent = questionBank[count].option1;
+    generateBtn2.textContent = questionBank[count].option2;
+    generateBtn3.textContent = questionBank[count].option3;
+    generateBtn4.textContent = questionBank[count].option4;
+    generateStartBtn.setAttribute("style", "display: none;");
+    questionChoices.setAttribute("style", "display: block;");
+
+    
+    if(count === questionBank.length) {
+        console.log("GAME OVER");
+    }
+    
 }
 
 
@@ -59,13 +72,15 @@ timer.innerHTML = "Timer: 120";
 
 //Timer Function
 function countdown(){  
-    var seconds = 119;  
+    var seconds = 10;  
     var timer = document.getElementById("timer");
     
     
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
         if (seconds === 0) {
+            timer.innerHTML = " ";
+            console.log("Game Over");
             clearInterval(clock);
         }
     }, 1000);
@@ -76,5 +91,3 @@ function countdown(){
 //Starts timeer on button click
 generateStartBtn.addEventListener("click", countdown);
 generateStartBtn.addEventListener("click", nextQuestion);
-
-// generateBtn.setAttribute("style", "display: none");
