@@ -9,6 +9,8 @@ var generateBtn3 = document.querySelector("#button3");
 var generateBtn4 = document.querySelector("#button4");
 var questionBlock = document.getElementById("questionBlock");
 var questionChoices = document.querySelector("#questionChoices");
+var answerButton = document.querySelectorAll("button");
+console.log(answerButton);
 
 var questionBank;
 
@@ -19,14 +21,7 @@ var question1 = {
     option2: "Answer 2",
     option3: "Answer 3",
     option4: "Answwer 4",
-    correctAnswer: "Answer 2",
-    checkAnswer: function(a) {
-        if(a === this.correctAnswer){
-            console.log("Correct")
-        }else{
-            console.log("Incorrect")
-        }
-    }
+    correctAnswer: "Answer 2"   
 };
 
 var question2 = {
@@ -35,8 +30,33 @@ var question2 = {
     option2: "Answer 2",
     option3: "Answer 3",
     option4: "Answwer 4",
-    correctAnswer: "Answer 1",
+    correctAnswer: "Answer 1"
 };
+
+var question3 = {
+    questionText: "Question 3",
+    option1: "Answer 1",
+    option2: "Answer 2",
+    option3: "Answer 3",
+    option4: "Answwer 4",
+    correctAnswer: "Answer 2"
+}
+
+var question4 = {
+    questionText: "Question 4",
+    option1: "Answer 1",
+    option2: "Answer 2",
+    option3: "Answer 3",
+    option4: "Answwer 4",
+    correctAnswer: "Answer 4"
+}
+
+var highscores = {
+    name: "",
+    score: ""
+}
+
+var leaderboard = [];
 
 
 
@@ -52,26 +72,27 @@ function nextQuestion(){
     generateStartBtn.setAttribute("style", "display: none;");
     questionChoices.setAttribute("style", "display: block;");
 
-    generateBtn1.addEventListener("click", function() {
-        console.log(count);
-        console.log("Answer: " + questionBank[count].correctAnswer);
-        console.log("Choice: " + questionBank[count].option1);
-        if (questionBank[count].correctAnswer !== questionBank[count].option1){
-            seconds -= 15;
-            console.log("Wrong");
-        }else{
-            console.log("Correct!");
-        }
+    questionChoices.addEventListener("click", checkAnswer, false);
+}
 
-        count++;
-        
-        if(count === questionBank.length){
-            console.log("Game Over");
-            //Need to hand a function call that directs to receiving input for leaderboard.
-        }else{
-            nextQuestion();
-        }
-    })
+//Handles button clicks for question / answer portion of Quiz.
+function checkAnswer(e){
+    console.log(e.target.textContent);
+    if (e.target.textContent !== questionBank[count].correctAnswer)
+    {
+        seconds -= 15;
+        console.log("Wrong");
+    }else{
+        console.log("Correct!");
+    }
+
+    count++
+
+    if(count === questionBank.length) {
+        console.log("Game Over");
+    }else{
+        nextQuestion();
+    }
 }
 
 
