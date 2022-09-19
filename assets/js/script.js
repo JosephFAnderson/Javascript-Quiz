@@ -1,6 +1,6 @@
 var count = 0;
 var score;
-var seconds = 120;
+var seconds = 5;
 var generateStartBtn = document.querySelector("#startbtn");
 var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
 var generateBtn1 = document.querySelector("#button1");
@@ -148,10 +148,12 @@ function countdown(){
     //THIS GAMEOVER() IS CAUSING DUPLICATE ENTRIES WHEN SCORE > 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
-        if (seconds <= 0) {
+        if (seconds <= 0 && score == undefined) {
             timer.innerHTML = " ";
             clearInterval(clock);
             gameOver();
+        }else if (seconds <= 0) {
+            clearInterval(clock);
         }
     }, 1000);
 }
