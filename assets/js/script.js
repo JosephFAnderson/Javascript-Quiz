@@ -1,6 +1,5 @@
-//Where to begin?
-//Array to hold questions
 var count = 0;
+var score;
 var seconds = 120;
 var generateStartBtn = document.querySelector("#startbtn");
 var generateBtn1 = document.querySelector("#button1");
@@ -9,12 +8,8 @@ var generateBtn3 = document.querySelector("#button3");
 var generateBtn4 = document.querySelector("#button4");
 var questionBlock = document.getElementById("questionBlock");
 var questionChoices = document.querySelector("#questionChoices");
-var answerButton = document.querySelectorAll("button");
-console.log(answerButton);
 
-var questionBank;
-
-//Create question object
+//Create question objects
 var question1 = {
     questionText: "Question 1",
     option1: "Answer 1",
@@ -50,17 +45,20 @@ var question4 = {
     option4: "Answwer 4",
     correctAnswer: "Answer 4"
 }
-
 var highscores = {
     name: "",
     score: ""
 }
 
-var leaderboard = [];
+//Check user local storage for leaderboard data. If none create empty leaderboard.
+if (JSON.parse(localStorage.getItem("leaderboard")) === null){
+    var leaderboard = [];
+}else{
+    var leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
+    console.log(leaderboard);
+}
 
-
-
-questionBank = [question1, question2];
+var questionBank = [question1, question2, question3, question4];
 
 // This function is what runs the quiz part of the game.
 function nextQuestion(){
@@ -90,13 +88,33 @@ function checkAnswer(e){
 
     if(count === questionBank.length) {
         console.log("Game Over");
+        score = seconds;
+        seconds = 1;
+        gameOver();
+        
     }else{
         nextQuestion();
     }
 }
 
+//Allow users to enter their initials to save score to leaderboard.
+function gameOver() {
+    var form = document.querySelector("form");
+    var submit = document.querySelector("#submit");
+    var initials = document.querySelector("#initials");
+    form.setAttribute("style", "display: block");
+    questionChoices.setAttribute("style", "display: none");
+    questionBlock.textContent = "You final score is: " + score + ". If you would like to save your score, please enter your initials.";
+    
+    //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
+    //Then store leaderboard array to local storage.
+    submit.addEventListener("click", function() {        
+        leaderboard.push({name: initials.value, total: score});
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+    })
+}
 
-
+// console.log(JSON.parse(localStorage.getItem("leaderboard")));
 /*
 This sets up the default timer.
 */
@@ -121,3 +139,17 @@ function countdown(){
 //Starts timeer on button click
 generateStartBtn.addEventListener("click", countdown);
 generateStartBtn.addEventListener("click", nextQuestion);
+
+
+//Compares the scores of the leaderboard to sort them highest to lowest
+function sortLeaderboard(a, b) {
+    if (a.total < b.total){
+        return 1;
+    }else if(a.total > b.total){
+        return -1;
+    }else{
+        return 0;
+    }
+}
+leaderboard.sort(sortLeaderboard);
+

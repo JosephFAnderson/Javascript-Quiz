@@ -50,3 +50,7 @@ button{
     display: block;
     width: 150px;
 }
+
+form{
+    display: none;
+}
