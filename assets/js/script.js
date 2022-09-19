@@ -1,6 +1,7 @@
 var count = 0;
 var score;
 var seconds = 120;
+var timer = document.getElementById("timer");
 var generateStartBtn = document.querySelector("#startbtn");
 var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
 var generateBtn1 = document.querySelector("#button1");
@@ -86,7 +87,7 @@ function checkAnswer(e){
     if(count === questionBank.length) {
         console.log("Game Over");
         score = seconds;
-        seconds = 1;
+        seconds = 0;
         gameOver();
         
     }else{
@@ -103,6 +104,7 @@ function gameOver() {
     questionBlock.setAttribute("style", "display: block");
     form.setAttribute("style", "display: block");
     questionChoices.setAttribute("style", "display: none");
+    timer.setAttribute("style", "display: none");
     header.textContent = "Results"
 
     if (score === undefined) {
@@ -140,10 +142,8 @@ This sets up the default timer.
 timer.innerHTML = "Timer: 120";
 
 //Timer Function
-function countdown(){    
-    var timer = document.getElementById("timer");    
+function countdown(){        
     
-    //THIS GAMEOVER() IS CAUSING DUPLICATE ENTRIES WHEN SCORE > 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
         if (seconds <= 0 && score == undefined) {
@@ -166,7 +166,6 @@ function sortHighscores(a, b) {
         return 0;
     }
 }
-// highscores.sort(sortHighscores);
 
 function viewLeaderboard() {
     var leaderboard = document.querySelector("#leaderboard");
@@ -176,13 +175,14 @@ function viewLeaderboard() {
     var stage = document.querySelector("#staging");
 
     stage.setAttribute("style", "display: none");
+    timer.setAttribute("style", "display: none");
     board.setAttribute("style", "display: block");
     leaderboard.setAttribute("style", "display: block");
     homeBtn.setAttribute("style", "display: inline-block");
     clearBtn.setAttribute("style", "display: inline-block");
 
-    console.log(highscores);
-    console.log(highscores.length);
+    highscores.sort(sortHighscores);
+
     for (var i = 0; i < highscores.length; i++) {
         if(leaderboard.childElementCount < highscores.length){
             leaderboard.appendChild(document.createElement("li"));
@@ -196,6 +196,7 @@ function viewLeaderboard() {
         li.textContent = "Player: " + highscores[i].name.toUpperCase() + " scored " + highscores[i].total + " points";
     }
 
+    
     homeBtn.addEventListener("click", function() {
         location.reload();
     });
