@@ -1,7 +1,8 @@
 var count = 0;
 var score;
-var seconds = 120;
+var seconds = 5;
 var generateStartBtn = document.querySelector("#startbtn");
+var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
 var generateBtn1 = document.querySelector("#button1");
 var generateBtn2 = document.querySelector("#button2");
 var generateBtn3 = document.querySelector("#button3");
@@ -104,6 +105,9 @@ function gameOver() {
     var initials = document.querySelector("#initials");
     form.setAttribute("style", "display: block");
     questionChoices.setAttribute("style", "display: none");
+    if (score === undefined) {
+        score = 0;
+    }
     questionBlock.textContent = "You final score is: " + score + ". If you would like to save your score, please enter your initials.";
     
     //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
@@ -128,20 +132,13 @@ function countdown(){
     
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
-        if (seconds === 0) {
+        if (seconds <= 0) {
             timer.innerHTML = " ";
-            console.log("Game Over");
             clearInterval(clock);
+            gameOver();
         }
     }, 1000);
 }
-
-
-
-//Starts timeer on button click
-generateStartBtn.addEventListener("click", countdown);
-generateStartBtn.addEventListener("click", nextQuestion);
-
 
 //Sorts the highscores to get them highest to lowest
 function sortHighscores(a, b) {
@@ -167,7 +164,10 @@ function viewLeaderboard() {
     clearBtn.setAttribute("style", "display: block");
 
     for (var i = 0; i < highscores.length; i++) {
-        leaderboard.appendChild(document.createElement("li"));
+        if(leaderboard.childElementCount < highscores.length){
+            leaderboard.appendChild(document.createElement("li"));
+        }
+
         var li = leaderboard.children[i];
         li.textContent = highscores[i].name + " " + highscores[i].total + " points";
     }
@@ -180,3 +180,10 @@ function viewLeaderboard() {
         leaderboard.setAttribute("style", "display: none");
     })
 }
+
+generateStartBtn.addEventListener("click", countdown);
+generateStartBtn.addEventListener("click", nextQuestion);
+generateViewLeaderboard.addEventListener("click", function(e) {
+    e.preventDefault();
+    viewLeaderboard();
+});
