@@ -10,7 +10,7 @@
     font-weight: bolder;
 }
 
-#staging{
+section{
     display: flex;
     flex-direction: column;
     position: relative;
@@ -21,22 +21,22 @@
     justify-content: center;
 }
 
-#staging h1{
+section h1{
     text-align: center;
 }
 
-#staging p{
+section p{
     flex-wrap: wrap;
     font-size: 18px;
 }
 
-#staging ol{
+section ol{
     list-style-type: none;
     display: none;
 
 }
 
-#staging ol li{
+section ol li{
     padding: 5px 0px;
 }
 
@@ -52,5 +52,17 @@ button{
 }
 
 form{
+    display: none;
+}
+
+#leaderboard{
+    display: none;
+}
+
+#again{
+    display: none;
+}
+
+#clear{
     display: none;
 }

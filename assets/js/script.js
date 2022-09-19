@@ -51,11 +51,11 @@ var highscores = {
 }
 
 //Check user local storage for leaderboard data. If none create empty leaderboard.
-if (JSON.parse(localStorage.getItem("leaderboard")) === null){
-    var leaderboard = [];
+if (JSON.parse(localStorage.getItem("highscores")) === null){
+    var highscores = [];
 }else{
-    var leaderboard = JSON.parse(localStorage.getItem("leaderboard"));
-    console.log(leaderboard);
+    var highscores = JSON.parse(localStorage.getItem("highscores"));
+    console.log(highscores);
 }
 
 var questionBank = [question1, question2, question3, question4];
@@ -108,9 +108,11 @@ function gameOver() {
     
     //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
     //Then store leaderboard array to local storage.
-    submit.addEventListener("click", function() {        
-        leaderboard.push({name: initials.value, total: score});
-        localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+    submit.addEventListener("click", function(e) {  
+        e.preventDefault();  
+        highscores.push({name: initials.value, total: score});
+        localStorage.setItem("highscores", JSON.stringify(highscores));  
+        viewLeaderboard();      
     })
 }
 
@@ -141,8 +143,8 @@ generateStartBtn.addEventListener("click", countdown);
 generateStartBtn.addEventListener("click", nextQuestion);
 
 
-//Compares the scores of the leaderboard to sort them highest to lowest
-function sortLeaderboard(a, b) {
+//Sorts the highscores to get them highest to lowest
+function sortHighscores(a, b) {
     if (a.total < b.total){
         return 1;
     }else if(a.total > b.total){
@@ -151,5 +153,30 @@ function sortLeaderboard(a, b) {
         return 0;
     }
 }
-leaderboard.sort(sortLeaderboard);
+highscores.sort(sortHighscores);
 
+function viewLeaderboard() {
+    var leaderboard = document.querySelector("#leaderboard");
+    var againBtn = document.querySelector("#again");
+    var clearBtn = document.querySelector("#clear");
+    var stage = document.querySelector("#staging");
+
+    stage.setAttribute("style", "display: none");
+    leaderboard.setAttribute("style", "display: block");
+    againBtn.setAttribute("style", "display: block");
+    clearBtn.setAttribute("style", "display: block");
+
+    for (var i = 0; i < highscores.length; i++) {
+        leaderboard.appendChild(document.createElement("li"));
+        var li = leaderboard.children[i];
+        li.textContent = highscores[i].name + " " + highscores[i].total + " points";
+    }
+
+    againBtn.addEventListener("click", function() {
+        location.reload();
+    });
+    clearBtn.addEventListener("click", function() {
+        localStorage.clear();
+        leaderboard.setAttribute("style", "display: none");
+    })
+}
