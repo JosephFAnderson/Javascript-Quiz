@@ -1,6 +1,6 @@
 var count = 0;
 var score;
-var seconds = 5;
+var seconds = 120;
 var generateStartBtn = document.querySelector("#startbtn");
 var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
 var generateBtn1 = document.querySelector("#button1");
@@ -74,9 +74,7 @@ function nextQuestion(){
 
 //Handles button clicks for question / answer portion of Quiz.
 function checkAnswer(e){
-    console.log(e.target.textContent);
-    if (e.target.textContent !== questionBank[count].correctAnswer)
-    {
+    if (e.target.textContent !== questionBank[count].correctAnswer) {
         seconds -= 15;
         console.log("Wrong");
     }else{
@@ -172,11 +170,13 @@ function sortHighscores(a, b) {
 
 function viewLeaderboard() {
     var leaderboard = document.querySelector("#leaderboard");
+    var board = document.querySelector("#board");
     var homeBtn = document.querySelector("#home");
     var clearBtn = document.querySelector("#clear");
     var stage = document.querySelector("#staging");
 
     stage.setAttribute("style", "display: none");
+    board.setAttribute("style", "display: block");
     leaderboard.setAttribute("style", "display: block");
     homeBtn.setAttribute("style", "display: inline-block");
     clearBtn.setAttribute("style", "display: inline-block");
