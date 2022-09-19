@@ -1,6 +1,6 @@
 var count = 0;
 var score;
-var seconds = 5;
+var seconds = 120;
 var generateStartBtn = document.querySelector("#startbtn");
 var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
 var generateBtn1 = document.querySelector("#button1");
@@ -9,6 +9,7 @@ var generateBtn3 = document.querySelector("#button3");
 var generateBtn4 = document.querySelector("#button4");
 var questionBlock = document.getElementById("questionBlock");
 var questionChoices = document.querySelector("#questionChoices");
+var header = document.querySelector("h1");
 
 //Create question objects
 var question1 = {
@@ -46,10 +47,6 @@ var question4 = {
     option4: "Answwer 4",
     correctAnswer: "Answer 4"
 }
-var highscores = {
-    name: "",
-    score: ""
-}
 
 //Check user local storage for leaderboard data. If none create empty leaderboard.
 if (JSON.parse(localStorage.getItem("highscores")) === null){
@@ -63,11 +60,12 @@ var questionBank = [question1, question2, question3, question4];
 
 // This function is what runs the quiz part of the game.
 function nextQuestion(){
-    questionBlock.textContent = questionBank[count].questionText;
+    header.textContent = questionBank[count].questionText;
     generateBtn1.textContent = questionBank[count].option1;
     generateBtn2.textContent = questionBank[count].option2;
     generateBtn3.textContent = questionBank[count].option3;
     generateBtn4.textContent = questionBank[count].option4;
+    questionBlock.setAttribute("style", "display: none");
     generateStartBtn.setAttribute("style", "display: none;");
     questionChoices.setAttribute("style", "display: block;");
 
@@ -103,21 +101,38 @@ function gameOver() {
     var form = document.querySelector("form");
     var submit = document.querySelector("#submit");
     var initials = document.querySelector("#initials");
+
+    questionBlock.setAttribute("style", "display: block");
     form.setAttribute("style", "display: block");
     questionChoices.setAttribute("style", "display: none");
+    header.textContent = "Results"
+
     if (score === undefined) {
         score = 0;
     }
-    questionBlock.textContent = "You final score is: " + score + ". If you would like to save your score, please enter your initials.";
+
+    questionBlock.textContent = "Your final score is: " + score + ". If you would like to save your score, please enter your initials.";
     
-    //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
-    //Then store leaderboard array to local storage.
-    submit.addEventListener("click", function(e) {  
-        e.preventDefault();  
-        highscores.push({name: initials.value, total: score});
-        localStorage.setItem("highscores", JSON.stringify(highscores));  
-        viewLeaderboard();      
-    })
+    if (score <= 0) {
+        var label = document.querySelector("label");
+
+        label.setAttribute("style", "display: none");
+        initials.setAttribute("style", "display: none");
+        questionBlock.textContent = "Your final score is: " + score + ". Please try again!"
+        submit.textContent = "Home";
+        submit.addEventListener("click", function(e) {
+            location.reload;
+        })
+    }else{
+        //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
+        //Then store leaderboard array to local storage.
+        submit.addEventListener("click", function(e) {  
+            e.preventDefault();  
+            highscores.push({name: initials.value, total: score});
+            localStorage.setItem("highscores", JSON.stringify(highscores));  
+            viewLeaderboard();      
+        })
+}
 }
 
 // console.log(JSON.parse(localStorage.getItem("leaderboard")));
@@ -130,6 +145,7 @@ timer.innerHTML = "Timer: 120";
 function countdown(){    
     var timer = document.getElementById("timer");    
     
+    //THIS GAMEOVER() IS CAUSING DUPLICATE ENTRIES WHEN SCORE > 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
         seconds--;
         if (seconds <= 0) {
@@ -150,29 +166,35 @@ function sortHighscores(a, b) {
         return 0;
     }
 }
-highscores.sort(sortHighscores);
+// highscores.sort(sortHighscores);
 
 function viewLeaderboard() {
     var leaderboard = document.querySelector("#leaderboard");
-    var againBtn = document.querySelector("#again");
+    var homeBtn = document.querySelector("#home");
     var clearBtn = document.querySelector("#clear");
     var stage = document.querySelector("#staging");
 
     stage.setAttribute("style", "display: none");
     leaderboard.setAttribute("style", "display: block");
-    againBtn.setAttribute("style", "display: block");
-    clearBtn.setAttribute("style", "display: block");
+    homeBtn.setAttribute("style", "display: inline-block");
+    clearBtn.setAttribute("style", "display: inline-block");
 
+    console.log(highscores);
+    console.log(highscores.length);
     for (var i = 0; i < highscores.length; i++) {
         if(leaderboard.childElementCount < highscores.length){
             leaderboard.appendChild(document.createElement("li"));
         }
 
+        if(i%2 > 0) {
+            leaderboard.children[i].setAttribute("style", "background-color: rgb(144, 162, 201)");
+        }
+
         var li = leaderboard.children[i];
-        li.textContent = highscores[i].name + " " + highscores[i].total + " points";
+        li.textContent = "Player: " + highscores[i].name.toUpperCase() + " scored " + highscores[i].total + " points";
     }
 
-    againBtn.addEventListener("click", function() {
+    homeBtn.addEventListener("click", function() {
         location.reload();
     });
     clearBtn.addEventListener("click", function() {

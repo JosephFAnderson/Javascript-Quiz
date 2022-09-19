@@ -55,14 +55,33 @@ form{
     display: none;
 }
 
-#leaderboard{
-    display: none;
+#board{
+    display: block;
+    margin-top: 100px;
 }
 
-#again{
+#board button{
+    width: 200px;
+    margin: 5px;
+    
+}
+
+#leaderboard{
     display: none;
+    padding-left: 0px;
+}
+
+#leaderboard li{
+    text-indent: 5px;
+    background-color: rgb(113, 189, 189);
+}
+
+#home{
+    display: none;
+    
 }
 
 #clear{
     display: none;
+    
 }
