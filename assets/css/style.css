@@ -42,7 +42,8 @@ section ol li{
 button{
     background-color: blue;
     color: white;
-    font-size: 18px;   
+    font-size: 18px;
+    min-width: 100px;   
 }
 
 #startbtn{

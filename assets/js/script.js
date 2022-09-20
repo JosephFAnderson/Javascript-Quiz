@@ -12,41 +12,42 @@ var questionBlock = document.getElementById("questionBlock");
 var questionChoices = document.querySelector("#questionChoices");
 var header = document.querySelector("h1");
 
+
 //Create question objects
 var question1 = {
-    questionText: "Question 1",
-    option1: "Answer 1",
-    option2: "Answer 2",
-    option3: "Answer 3",
-    option4: "Answwer 4",
-    correctAnswer: "Answer 2"   
+    questionText: "Which of the follow is the correct way to evaluate if something is equal in both type and value?",
+    option1: "!=",
+    option2: "==",
+    option3: "===",
+    option4: ">=",
+    correctAnswer: "==="   
 };
 
 var question2 = {
-    questionText: "Question 2",
-    option1: "Answer 1",
-    option2: "Answer 2",
-    option3: "Answer 3",
-    option4: "Answwer 4",
-    correctAnswer: "Answer 1"
+    questionText: "Which of the following is not an acceptable way to declare a variable called myName that contains a vaule of 'Joseph'.",
+    option1: "let myName = 'Joseph';",
+    option2: "var myName = 'Joseph';",
+    option3: "const myName = 'Joseph';",
+    option4: "set myName = 'Joseph';",
+    correctAnswer: "set myName = 'Joseph';"
 };
 
 var question3 = {
-    questionText: "Question 3",
-    option1: "Answer 1",
-    option2: "Answer 2",
-    option3: "Answer 3",
-    option4: "Answwer 4",
-    correctAnswer: "Answer 2"
+    questionText: "Given an array that contains the following: [Joseph, Brad, Martin, Alex]. What index is 'Martin' at?",
+    option1: "1",
+    option2: "2",
+    option3: "3",
+    option4: "4",
+    correctAnswer: "2"
 }
 
 var question4 = {
-    questionText: "Question 4",
-    option1: "Answer 1",
-    option2: "Answer 2",
-    option3: "Answer 3",
-    option4: "Answwer 4",
-    correctAnswer: "Answer 4"
+    questionText: "Which of the following is not a primitive data type of Javascript",
+    option1: "array",
+    option2: "string",
+    option3: "boolean",
+    option4: "undefined",
+    correctAnswer: "array"
 }
 
 //Check user local storage for leaderboard data. If none create empty leaderboard.
@@ -57,7 +58,14 @@ if (JSON.parse(localStorage.getItem("highscores")) === null){
     console.log(highscores);
 }
 
-var questionBank = [question1, question2, question3, question4];
+var defaultQuestionBank = [question1, question2, question3, question4];
+var questionBank = [];
+for(var i = defaultQuestionBank.length; i > 0; i--) {
+    var random = Math.floor(Math.random() * i);
+    console.log(random);
+    questionBank.push(defaultQuestionBank[random]);
+    defaultQuestionBank.splice(random, 1);
+}
 
 // This function is what runs the quiz part of the game.
 function nextQuestion(){
