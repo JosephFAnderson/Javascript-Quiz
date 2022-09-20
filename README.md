@@ -21,7 +21,7 @@ correctly or not.
 
 Upon completion of the quiz the user will be take to a screen that displays their final score and allow them to enter their intials to save the attempt to a leaderboard. This data is saved to the users local storage to allow comparison on future attempts.
 
-![Results Page](./assets/images/results.png)
+![Results Page](./assets/images/Results.png)
 
 From the default page, users can also click the View Leaderboard button at the top left in order to view current save highscores. From there they can return home by clicking 'Home' or clear all current scores with 'Clear Highscore'
 
