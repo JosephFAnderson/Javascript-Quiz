@@ -1,17 +1,13 @@
+// Declare and assign global variables
 var count = 0;
 var score;
-var seconds = 120;
+var seconds = 90;
 var timer = document.getElementById("timer");
 var generateStartBtn = document.querySelector("#startbtn");
 var generateViewLeaderboard = document.querySelector("#viewLeaderboard");
-var generateBtn1 = document.querySelector("#button1");
-var generateBtn2 = document.querySelector("#button2");
-var generateBtn3 = document.querySelector("#button3");
-var generateBtn4 = document.querySelector("#button4");
-var questionBlock = document.getElementById("questionBlock");
+var questionBlock = document.querySelector("#questionBlock");
 var questionChoices = document.querySelector("#questionChoices");
 var header = document.querySelector("h1");
-
 
 //Create question objects
 var question1 = {
@@ -50,25 +46,13 @@ var question4 = {
     correctAnswer: "array"
 }
 
-//Check user local storage for leaderboard data. If none create empty leaderboard.
-if (JSON.parse(localStorage.getItem("highscores")) === null){
-    var highscores = [];
-}else{
-    var highscores = JSON.parse(localStorage.getItem("highscores"));
-    console.log(highscores);
-}
-
-var defaultQuestionBank = [question1, question2, question3, question4];
-var questionBank = [];
-for(var i = defaultQuestionBank.length; i > 0; i--) {
-    var random = Math.floor(Math.random() * i);
-    console.log(random);
-    questionBank.push(defaultQuestionBank[random]);
-    defaultQuestionBank.splice(random, 1);
-}
-
 // This function is what runs the quiz part of the game.
 function nextQuestion(){
+    var generateBtn1 = document.querySelector("#button1");
+    var generateBtn2 = document.querySelector("#button2");
+    var generateBtn3 = document.querySelector("#button3");
+    var generateBtn4 = document.querySelector("#button4");
+
     header.textContent = questionBank[count].questionText;
     generateBtn1.textContent = questionBank[count].option1;
     generateBtn2.textContent = questionBank[count].option2;
@@ -81,13 +65,22 @@ function nextQuestion(){
     questionChoices.addEventListener("click", checkAnswer, false);
 }
 
-//Handles button clicks for question / answer portion of Quiz.
+// Handles button clicks for question / answer portion of Quiz.
 function checkAnswer(e){
+    var isCorrect = document.querySelector("#rightWrong");
+    isCorrect.setAttribute("style", "display: block");
+
     if (e.target.textContent !== questionBank[count].correctAnswer) {
         seconds -= 15;
-        console.log("Wrong");
-    }else{
-        console.log("Correct!");
+        isCorrect.textContent = "Wrong";
+        setTimeout(function() {
+            isCorrect.textContent = "";
+        }, 2000);
+    }else {
+        isCorrect.textContent = "Correct!";
+        setTimeout(function() {
+            isCorrect.textContent = "";
+        }, 2000);
     }
 
     count++
@@ -143,16 +136,11 @@ function gameOver() {
 }
 }
 
-// console.log(JSON.parse(localStorage.getItem("leaderboard")));
-/*
-This sets up the default timer.
-*/
-timer.innerHTML = "Timer: 120";
-
 //Timer Function
 function countdown(){        
     
-    var clock = setInterval(function(){ timer.innerHTML = "Timer: " + seconds;
+    var clock = setInterval(function(){ 
+        timer.innerHTML = "Timer: " + seconds;
         seconds--;
         if (seconds <= 0 && score == undefined) {
             timer.innerHTML = " ";
@@ -213,6 +201,32 @@ function viewLeaderboard() {
         leaderboard.setAttribute("style", "display: none");
     })
 }
+
+//Check user local storage for leaderboard data. If none create empty leaderboard.
+if (JSON.parse(localStorage.getItem("highscores")) === null){
+    var highscores = [];
+}else{
+    var highscores = JSON.parse(localStorage.getItem("highscores"));
+    console.log(highscores);
+}
+
+
+// Create default array of questions
+var defaultQuestionBank = [question1, question2, question3, question4];
+var questionBank = [];
+
+// Randomize the defaultQuestionBank and push it into questionBank
+for(var i = defaultQuestionBank.length; i > 0; i--) {
+    var random = Math.floor(Math.random() * i);
+    console.log(random);
+    questionBank.push(defaultQuestionBank[random]);
+    defaultQuestionBank.splice(random, 1);
+}
+
+/*
+This sets up the default timer.
+*/
+timer.innerHTML = "Timer: " + seconds;
 
 generateStartBtn.addEventListener("click", countdown);
 generateStartBtn.addEventListener("click", nextQuestion);
