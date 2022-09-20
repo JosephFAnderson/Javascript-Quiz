@@ -1,6 +1,6 @@
 // Declare and assign global variables
-var count = 0;
 var score;
+var count = 0;
 var seconds = 90;
 var timer = document.getElementById("timer");
 var generateStartBtn = document.querySelector("#startbtn");
@@ -46,8 +46,8 @@ var question4 = {
     correctAnswer: "array"
 }
 
-// This function is what runs the quiz part of the game.
-function nextQuestion(){
+// This function sets up the display of the quiz and listens for user answer.
+function nextQuestion() {
     var generateBtn1 = document.querySelector("#button1");
     var generateBtn2 = document.querySelector("#button2");
     var generateBtn3 = document.querySelector("#button3");
@@ -65,11 +65,12 @@ function nextQuestion(){
     questionChoices.addEventListener("click", checkAnswer, false);
 }
 
-// Handles button clicks for question / answer portion of Quiz.
+// Handles button clicks for question / answer portion of Quiz
 function checkAnswer(e){
     var isCorrect = document.querySelector("#rightWrong");
     isCorrect.setAttribute("style", "display: block");
 
+    // Checks if user answer is correct. If not deduct 15 seconds. Display Correct / Wrong with a timeout on display
     if (e.target.textContent !== questionBank[count].correctAnswer) {
         seconds -= 15;
         isCorrect.textContent = "Wrong";
@@ -85,6 +86,7 @@ function checkAnswer(e){
 
     count++
 
+    // Trigger end of game once last question answered
     if(count === questionBank.length) {
         console.log("Game Over");
         score = seconds;
@@ -96,7 +98,7 @@ function checkAnswer(e){
     }
 }
 
-//Allow users to enter their initials to save score to leaderboard.
+//Allow user to enter their initials to save score to leaderboard.
 function gameOver() {
     var form = document.querySelector("form");
     var submit = document.querySelector("#submit");
@@ -112,8 +114,6 @@ function gameOver() {
         score = 0;
     }
 
-    questionBlock.textContent = "Your final score is: " + score + ". If you would like to save your score, please enter your initials.";
-    
     if (score <= 0) {
         var label = document.querySelector("label");
 
@@ -125,6 +125,7 @@ function gameOver() {
             location.reload;
         })
     }else{
+        questionBlock.textContent = "Your final score is: " + score + ". If you would like to save your score, please enter your initials.";
         //Places an Event Listern to submit button. When pressed add user intials and score to leaderboard array.
         //Then store leaderboard array to local storage.
         submit.addEventListener("click", function(e) {  
@@ -133,7 +134,7 @@ function gameOver() {
             localStorage.setItem("highscores", JSON.stringify(highscores));  
             viewLeaderboard();      
         })
-}
+    }
 }
 
 //Timer Function
@@ -163,6 +164,7 @@ function sortHighscores(a, b) {
     }
 }
 
+// Sets up and displays the highscores on a leaderboard
 function viewLeaderboard() {
     var leaderboard = document.querySelector("#leaderboard");
     var board = document.querySelector("#board");
@@ -179,11 +181,13 @@ function viewLeaderboard() {
 
     highscores.sort(sortHighscores);
 
+    // Add the highscores to the leaderboard. Creates enough li to fit the contents of the array.
     for (var i = 0; i < highscores.length; i++) {
         if(leaderboard.childElementCount < highscores.length){
             leaderboard.appendChild(document.createElement("li"));
         }
 
+        // Change background color of the odd numbered scores to make viewing easier
         if(i%2 > 0) {
             leaderboard.children[i].setAttribute("style", "background-color: rgb(144, 162, 201)");
         }
@@ -196,6 +200,7 @@ function viewLeaderboard() {
     homeBtn.addEventListener("click", function() {
         location.reload();
     });
+
     clearBtn.addEventListener("click", function() {
         localStorage.clear();
         leaderboard.setAttribute("style", "display: none");
@@ -210,7 +215,6 @@ if (JSON.parse(localStorage.getItem("highscores")) === null){
     console.log(highscores);
 }
 
-
 // Create default array of questions
 var defaultQuestionBank = [question1, question2, question3, question4];
 var questionBank = [];
@@ -223,11 +227,10 @@ for(var i = defaultQuestionBank.length; i > 0; i--) {
     defaultQuestionBank.splice(random, 1);
 }
 
-/*
-This sets up the default timer.
-*/
+// Display timer
 timer.innerHTML = "Timer: " + seconds;
 
+// Handle button presses on default HTML page
 generateStartBtn.addEventListener("click", countdown);
 generateStartBtn.addEventListener("click", nextQuestion);
 generateViewLeaderboard.addEventListener("click", function(e) {
